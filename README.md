@@ -1,6 +1,79 @@
-# BigMart Sales ML
+# 🛒 BigMart Sales Prediction
 
-A machine learning project for sales prediction using advanced regression models and explainable AI.
+An end-to-end machine learning system for predicting `Item_Outlet_Sales` using advanced regression models, explainable AI, a Streamlit frontend, FastAPI backend, Docker, and cloud deployment.
+
+## 🌐 Live Application
+
+**Streamlit Application:**  
+https://bigmart-sales-ml.onrender.com
+
+**FastAPI Backend:**  
+https://sales-v8m6.onrender.com
+
+**API Documentation:**  
+https://sales-v8m6.onrender.com/docs
+
+---
+
+# 📌 Project Overview
+
+The objective of this project is to predict the sales of a product at a particular retail outlet using product-level and outlet-level characteristics.
+
+The project was developed as a complete production-oriented machine learning system rather than only a notebook experiment.
+
+The final architecture includes:
+
+- Exploratory Data Analysis
+- Data preprocessing
+- Feature engineering
+- Multiple regression models
+- Cross-validation
+- Hyperparameter optimization
+- Model comparison
+- Ensemble and stacking experiments
+- CatBoost production model
+- SHAP explainability
+- Streamlit UI
+- FastAPI REST API
+- Docker
+- Docker Compose
+- GitHub
+- Render cloud deployment
+
+---
+
+# 🎯 Business Problem
+
+Retail businesses need accurate estimates of product sales to support inventory planning, store-level decisions, and business analysis.
+
+The model predicts:
+
+`Item_Outlet_Sales`
+
+using information such as:
+
+- Product identifier
+- Product weight
+- Fat content
+- Product visibility
+- Product category
+- Product MRP
+- Outlet identifier
+- Outlet establishment year
+- Outlet size
+- Outlet location type
+- Outlet type
+
+---
+
+# 📊 Dataset
+
+The project uses the BigMart sales dataset containing product and outlet information.
+
+The target variable is:
+
+```text
+Item_Outlet_Sales
 
 ## 🔎 Exploratory Data Analysis
 
