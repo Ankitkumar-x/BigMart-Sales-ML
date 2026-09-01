@@ -15,6 +15,30 @@ https://sales-v8m6.onrender.com/docs
 
 ---
 
+## ✅ Project Status
+
+**Production-ready portfolio demo**
+
+- ✅ Model trained and evaluated
+- ✅ SHAP explainability
+- ✅ Streamlit UI
+- ✅ FastAPI REST API
+- ✅ Dockerized
+- ✅ Cloud deployed
+
+  
+## 🖥️ Application Preview
+
+### Single Prediction
+![Single Prediction](docs/screenshots/single_prediction.png)
+
+### SHAP Explanation
+![SHAP Explanation](docs/screenshots/shap_explanation.png)
+
+### Batch Prediction
+![Batch Prediction](docs/screenshots/batch_prediction.png)
+
+
 # 📌 Project Overview
 
 The objective of this project is to predict the sales of a product at a particular retail outlet using product-level and outlet-level characteristics.
@@ -41,6 +65,21 @@ The final architecture includes:
 - Render cloud deployment
 
 ---
+
+## 🧰 Tech Stack
+
+| Area | Technology |
+|---|---|
+| Language | Python |
+| Data Processing | Pandas, NumPy |
+| Machine Learning | Scikit-learn, CatBoost, XGBoost, LightGBM |
+| Explainability | SHAP |
+| Frontend | Streamlit |
+| Backend | FastAPI |
+| API Validation | Pydantic |
+| Containerization | Docker, Docker Compose |
+| Version Control | Git, GitHub |
+| Deployment | Render |
 
 # 🎯 Business Problem
 
@@ -141,6 +180,13 @@ CatBoost produced the strongest holdout R² among the tested models.
 The final production model is:
 
 **CatBoostRegressor**
+## Why CatBoost?
+
+CatBoost was selected as the production model because it achieved the best holdout R² among the evaluated models.
+
+It also provides native support for categorical features, which is useful for the product and outlet attributes in this dataset.
+
+Final holdout R²: **0.6174**
 
 ### Configuration:
 - **Iterations**: 800
