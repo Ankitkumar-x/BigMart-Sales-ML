@@ -432,7 +432,7 @@ Potential future improvements include:
 - Automated CI/CD
 - Cloud-native monitoring
 
-## 💼 Interview Summary
+## 💼 Summary
 
 This project demonstrates an end-to-end machine learning workflow:
 
