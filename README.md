@@ -1,82 +1,222 @@
 # BigMart Sales ML
-# 🛒 BigMart Sales Prediction
 
-An end-to-end machine learning system for predicting `Item_Outlet_Sales` using advanced regression models, explainable AI, a Streamlit frontend, FastAPI backend, Docker, and cloud deployment.
+A machine learning project for sales prediction using advanced regression models and explainable AI.
 
-## 🌐 Live Application
+## 🔎 Exploratory Data Analysis
 
-**Streamlit Application:**  
-https://bigmart-sales-ml.onrender.com
+EDA was performed to understand:
 
-**FastAPI Backend:**  
-https://sales-v8m6.onrender.com
+- Dataset structure
+- Missing values
+- Duplicate records
+- Unique values
+- Numerical distributions
+- Categorical distributions
+- Outliers
+- Target distribution
+- Feature correlations
+- Feature-target relationships
 
-**API Documentation:**  
-https://sales-v8m6.onrender.com/docs
+The goal of EDA was to identify data-quality issues and discover useful patterns before model development.
 
----
+## 🛠️ Feature Engineering
 
-# 📌 Project Overview
+Several additional features were created to improve the representation of the underlying business problem.
 
-The objective of this project is to predict the sales of a product at a particular retail outlet using product-level and outlet-level characteristics.
+Examples include:
 
-The project was developed as a complete production-oriented machine learning system rather than only a notebook experiment.
+### Outlet Age
+```
+Outlet_Age = Current Year - Outlet_Establishment_Year
+```
 
-The final architecture includes:
+### Item Identifier Category
+The first two characters of the product identifier were extracted as a higher-level product category.
 
-- Exploratory Data Analysis
-- Data preprocessing
-- Feature engineering
-- Multiple regression models
-- Cross-validation
+### Zero Visibility Indicator
+`Item_Visibility_Zero` identifies products with zero recorded visibility.
+
+### Log-transformed Visibility
+`Item_Visibility_Log` was created using:
+```python
+np.log1p(Item_Visibility)
+```
+
+### Log-transformed MRP
+`Item_MRP_Log` was created using:
+```python
+np.log1p(Item_MRP)
+```
+
+## 🤖 Models Evaluated
+
+Multiple regression algorithms were evaluated under the same validation framework.
+
+| Model | Validation R² |
+|-------|---------------|
+| CatBoost | 0.6174 |
+| XGBoost | 0.6115 |
+| LightGBM | 0.6043 |
+| Extra Trees | 0.5935 |
+| HistGradientBoosting | 0.5650 |
+| Random Forest | 0.5624 |
+
+CatBoost produced the strongest holdout R² among the tested models.
+
+## 🏆 Final Model
+
+The final production model is:
+
+**CatBoostRegressor**
+
+### Configuration:
+- **Iterations**: 800
+- **Learning Rate**: 0.03
+- **Depth**: 6
+- **L2 Leaf Regularization**: 5
+- **Random Seed**: 42
+
+The trained model is stored as:
+```
+models/bigmart_catboost_final.cbm
+```
+
+## 📈 Model Performance
+
+The final model achieved the following holdout results:
+
+| Metric | Result |
+|--------|--------|
+| R² | 0.6174 |
+| MAE | 713.94 |
+| RMSE | 1019.76 |
+| Within ±10% | 16.13% |
+| Within ±20% | 34.90% |
+
+The 5-fold out-of-fold evaluation produced an R² of approximately:
+```
+0.5995
+```
+
+### Important
+R² is not the same thing as classification accuracy.
+
+An R² of 0.6174 means that approximately 61.74% of the variance in the target was explained by the model on the holdout evaluation.
+
+## 🔬 Model Selection
+
+CatBoost was selected because it produced the strongest validation performance among the tested models while naturally handling categorical variables.
+
+Additional experiments were performed with:
+
+- Feature engineering variations
+- Missing-value strategies
+- Log-transformed target
+- XGBoost
+- LightGBM
+- Extra Trees
+- HistGradientBoosting
+- Random Forest
+- Ensemble weighting
+- Stacking
 - Hyperparameter optimization
-- Model comparison
-- Ensemble and stacking experiments
-- CatBoost production model
-- SHAP explainability
-- Streamlit UI
-- FastAPI REST API
-- Docker
-- Docker Compose
-- GitHub
-- Render cloud deployment
 
----
+Some experiments did not improve the validation performance and were therefore not selected for production.
 
-# 🎯 Business Problem
+This is an important part of the modeling process: not every experiment improves the final model.
 
-Retail businesses need accurate estimates of product sales to support inventory planning, store-level decisions, and business analysis.
+## 🧠 Explainable AI with SHAP
 
-The model predicts:
+SHAP was integrated into the application to explain individual predictions.
 
-`Item_Outlet_Sales`
+For each prediction, the application displays:
 
-using information such as:
+- SHAP waterfall visualization
+- Feature contribution values
+- Features increasing the prediction
+- Features decreasing the prediction
 
-- Product identifier
-- Product weight
-- Fat content
-- Product visibility
-- Product category
-- Product MRP
-- Outlet identifier
-- Outlet establishment year
-- Outlet size
-- Outlet location type
-- Outlet type
+### Interpretation Guide:
 
----
+| SHAP Value | Effect |
+|------------|--------|
+| Positive SHAP value | Pushes prediction upward |
+| Negative SHAP value | Pushes prediction downward |
 
-# 📊 Dataset
+This provides local interpretability for individual predictions.
 
-The project uses the BigMart sales dataset containing product and outlet information.
+## 🖥️ Streamlit Application
 
-The target variable is:
+The application provides three major sections.
 
-```text
-Item_Outlet_Sales
+### 🔮 Single Prediction
 
+Users can enter product and outlet information and receive:
 
+- Predicted sales
+- Model information
+- SHAP explanation
+- Feature contribution analysis
+
+### 📂 Batch Prediction
+
+Users can upload a CSV file and generate predictions for multiple observations.
+
+The application provides:
+
+- Input validation
+- Prediction results
+- Number of rows
+- Total predicted sales
+- Average predicted sales
+- Downloadable prediction CSV
+
+### 📊 Model Information
+
+The application exposes:
+
+- Model name
+- R²
+- MAE
+- RMSE
+- Model configuration
+- Number of features
+
+## ⚡ FastAPI Backend
+
+The machine learning model is exposed through a REST API.
+
+### Available Endpoints:
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | `/health` | Health check |
+| GET | `/` | Root endpoint |
+| GET | `/model-info` | Model information |
+| POST | `/predict` | Single prediction |
+| POST | `/predict-batch` | Batch prediction |
+
+### Health Check
+**GET** `/health`
+
+Used to verify that the API service is available.
+
+### Model Information
+**GET** `/model-info`
+
+Returns model configuration and evaluation information.
+
+### Single Prediction
+**POST** `/predict`
+
+Accepts one observation and returns the predicted sales.
+
+### Batch Prediction
+**POST** `/predict-batch`
+
+Accepts multiple observations and returns predictions for each row.
+
+FastAPI also uses Pydantic validation to reject invalid inputs before they reach the model.
 
 
 ## 🏗️ System Architecture
