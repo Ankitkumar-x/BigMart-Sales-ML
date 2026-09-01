@@ -72,10 +72,10 @@ The project uses the BigMart sales dataset containing product and outlet informa
 
 The target variable is:
 
-```text
+
 Item_Outlet_Sales
 
-## 🔎 Exploratory Data Analysis
+# 🔎 Exploratory Data Analysis
 
 EDA was performed to understand:
 
