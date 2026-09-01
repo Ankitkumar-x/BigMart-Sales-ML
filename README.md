@@ -1,6 +1,6 @@
 # BigMart Sales ML
 
-A machine learning project for sales prediction using advanced regression models and explainable AI.
+A machine learning project for sales prediction using advanced regression models and explainable AI..
 
 ## 🏗️ System Architecture
 
