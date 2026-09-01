@@ -1,0 +1,24 @@
+{
+    "model_name": "BigMart CatBoost Sales Predictor",
+    "algorithm": "CatBoostRegressor",
+    "target": "Item_Outlet_Sales",
+    "random_seed": 42,
+    "iterations": 800,
+    "learning_rate": 0.03,
+    "depth": 6,
+    "l2_leaf_reg": 5,
+    "validation_r2": 0.617398,
+    "validation_mae": 713.937092,
+    "validation_rmse": 1019.755275,
+    "categorical_features": [
+        "Item_Identifier",
+        "Item_Fat_Content",
+        "Item_Type",
+        "Outlet_Identifier",
+        "Outlet_Size",
+        "Outlet_Location_Type",
+        "Outlet_Type",
+        "Item_ID_Category"
+    ],
+    "feature_count": 16
+}
